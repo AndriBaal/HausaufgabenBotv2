@@ -24,11 +24,18 @@ async def command_add_homework(ctx, module=None, termination_date=None, descript
     if module == None or termination_date == None or description == None:
         await ctx.channel.send('Keine gültigen Informationen. Hilfe mit /info') 
         return
+    try:
+        datetime.datetime.strptime(termination_date, '%Y-%m-%d').date()
+    except:
+        await ctx.channel.send('Falsches Zeitformat! Bitte Datum folgendermassen angeben: Jahr-Monat-Tag')
+        return
+
     homework.append({
         'module': module,
         'termination_date': termination_date,
         'description': description
     })
+    await ctx.channel.send('Hausaufgabe erfolgreich eingetragen!')
     
 @bot.command(name='removeHomework')
 async def command_remove_homework(ctx, index=None):
@@ -37,7 +44,7 @@ async def command_remove_homework(ctx, index=None):
         await ctx.channel.send('Hausaufgabe entfernt: '+'   Modul: '+homework[index]['module']+'    Datum: '+homework[index]['termination_date'] + '    Beschreibung: ' + homework[index]['description'])
         homework.pop(index)
         write_data()
-    except error:
+    except IndexError:
         await ctx.channel.send('Kein gültiger Index. Hilfe mit /info') 
 
 @bot.command(name='homework')
@@ -63,12 +70,15 @@ async def on_command_error(ctx, error):
 @tasks.loop(hours=1)
 async def mytask():
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+    off = 0
     for i in range(len(homework)):
         try:
-            if tomorrow > datetime.datetime.strptime(homework[i]['termination_date'], '%Y-%m-%d').date():
-                homework.pop(i)
+            if tomorrow > datetime.datetime.strptime(homework[i-off]['termination_date'], '%Y-%m-%d').date():
+                homework.pop(i-off)
+                off+=1
         except:
-            homework.pop(i)
+            homework.pop(i-off)
+            off+=1
         
     write_data()
     

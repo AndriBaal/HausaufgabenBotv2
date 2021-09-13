@@ -1,17 +1,17 @@
 [
     {
-        "module": "117",
-        "termination_date": "2021-09-20",
-        "description": "Pr\u00fcfung"
-    },
-    {
         "module": "Mathe",
         "termination_date": "2021-09-14",
         "description": "Pr\u00fcfung Mengenlehre"
     },
     {
-        "module": "319",
-        "termination_date": "2021-09-14",
-        "description": "Aufgabe 1 + 2"
+        "module": "117",
+        "termination_date": "2021-09-20",
+        "description": "Pr\u00fcfung"
+    },
+    {
+        "module": "ABU",
+        "termination_date": "2021-09-27",
+        "description": "Pr\u00fcfung  Gesellschaft"
     }
 ]
