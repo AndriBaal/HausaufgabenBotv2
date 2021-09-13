@@ -1,11 +1,9 @@
 from os import error
-import discord
 import json
 from discord.ext import commands, tasks
 import datetime
 
 bot = commands.Bot(command_prefix='/')
-homework = []
 
 with open('data.json', 'r') as jf:
     homework = json.load(jf)
@@ -44,7 +42,7 @@ async def command_remove_homework(ctx, index=None):
 
 @bot.command(name='homework')
 async def command_show_homework(ctx):
-    #homework.sort(key=lambda r: r.date)
+    homework.sort(key=lambda h: h['termination_date'])
     if len(homework) == 0:
         await ctx.channel.send('Keine Hausaufgaben eingetragen.')
         return
@@ -66,8 +64,12 @@ async def on_command_error(ctx, error):
 async def mytask():
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
     for i in range(len(homework)):
-        if tomorrow > datetime.datetime.strptime(homework[i]['termination_date'], '%Y-%m-%d').date():
+        try:
+            if tomorrow > datetime.datetime.strptime(homework[i]['termination_date'], '%Y-%m-%d').date():
+                homework.pop(i)
+        except:
             homework.pop(i)
+        
     write_data()
     
 mytask.start()
