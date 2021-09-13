@@ -72,5 +72,5 @@ async def mytask():
     
 mytask.start()
 
-token = 'ODg2ODU3MTUxNzY1Njg4Mzgz.YT7sFQ.-Aonv0QpKbiDaaLjO6G_cfnr2bA'
+token = 'xxx'
 bot.run(token)
