@@ -69,11 +69,11 @@ async def on_command_error(ctx, error):
 
 @tasks.loop(hours=1)
 async def mytask():
-    tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+    today = datetime.date.today()
     off = 0
     for i in range(len(homework)):
         try:
-            if tomorrow > datetime.datetime.strptime(homework[i-off]['termination_date'], '%Y-%m-%d').date():
+            if today > datetime.datetime.strptime(homework[i-off]['termination_date'], '%Y-%m-%d').date():
                 homework.pop(i-off)
                 off+=1
         except:
